@@ -13,14 +13,7 @@ library(MLmetrics)
 library(dplyr)
 library(corrplot)
 
-duan_smearing_factor<-function(y,y_pred){
-  n=length(y)
-  resid=y-y_pred
-  sigma=sd(resid)
-  smearing_factor= exp((1/n)* sum(resid^2)/(2*sigma^2))-((n-1)/(2*n))
-  return(smearing_factor)
-}
-data <- read.csv("DF_SYNTH2_km.csv")
+data <- read.csv("DF_SYNTH2.csv")
 data<-data[data$Semana<=10,]  #seleccion de las primeras 10 semanas
 data$rut_seller<-as.character(data$rut_seller)
 rut<-data[data$Semana==10,]$rut_seller
@@ -53,10 +46,7 @@ pred_train<-c()
 real_train<-c()
 seller<-c()
 sels_train<-c()
-
-
-
-
+#SET SELLERS TRAIN
 for (i in (index_train)){
   tryCatch({
     print(i)
@@ -72,91 +62,32 @@ for (i in (index_train)){
           list( "suma",2,c('mean')),
           list( "suma",3,c('mean')),
           list( "suma",4,c('mean')),
-          #list( "precio_prom",1, c('mean')),
           list( "SKU",1, c("mean")),
           list( "precio_desv",1,c("mean")),
           list( "precio_median",1,c("mean")),
-          #list( "precio_max",1,c("mean")),
           list( "precio_min",1,c("mean")),
-          #list( "precio_25",1,c("mean")),
           list( "precio_75",1,c("mean")),
-          list( "cluster",1,c("mean")),
-          #list( "tramo_1.0",1,c("mean")),
-          #list( "tramo_2.0",1,c("mean")),
-          #list( "tramo_3.0",1,c("mean")),
-          #list( "tramo_4.0",1,c("mean")),
-          #list( "tramo_5.0",1,c("mean")),
           list( "tramo_6.0",1,c("mean")),
-          #list( "tramo_7.0",1,c("mean")),
-          #list( "tramo_8.0",1,c("mean")),
           list( "tramo_9.0",1,c("mean")),
-          #list( "tramo_10.0",1,c("mean")),
-          # list( "tramo_11.0",1,c("mean")),
-          # list( "tramo_12.0",1,c("mean")),
-          # list( "tramo_13.0",1,c("mean")),
-          #list( "G01",1,c("mean")),
           list( "G02",1,c("mean")),
-          #list( "G03",1,c("mean")),
-          #list( "G04",1,c("mean")),
-          #list( "G05",1,c("mean")),
           list( "G06",1,c("mean")),
           list( "G07",1,c("mean")),
-          #list( "G08",1,c("mean")),
           list( "G09",1,c("mean")),
-          #list( "G10",1,c("mean")),
-          #list( "G11",1,c("mean")),
-          #list( "G12",1,c("mean")),
-          #list( "G13",1,c("mean")),
-          #list( "G14",1,c("mean")),
           list( "G16",1,c("mean")),
-          #list( "G17",1,c("mean")),
           list( "G18",1,c("mean")),
-          #list( "G19",1,c("mean")),
-          #list( "G20",1,c("mean")),
           list( "G21",1,c("mean")),
           list( "G22",1,c("mean")),
           list( "G0801",1,c("mean")),
           list( "G0802",1,c("mean")),
-          #list( "G1202",1,c("mean")),
-          #list( "G1302",1,c("mean")),
-          #list( "G1403",1,c("mean")),
-          #list( "G1602",1,c("mean")),
           list( "G1604",1,c("mean")),
-          #list( "G1612",1,c("mean")),
           list( "G1711",1,c("mean")),
-          #list( "G1802",1,c("mean")),
-          #list( "G1803",1,c("mean")),
           list( "G1901",1,c("mean")),
-          #list( "G1902",1,c("mean")),
-          # list( "G1903",1,c("mean")),
-          # list( "G1907",1,c("mean")),
-          # list( "G2101",1,c("mean")),
-          # list( "G2102",1,c("mean")),
-          # list( "G2103",1,c("mean")),
           list( "G2104",1,c("mean")),
-          # list( "G2105",1,c("mean")),
           list( "Otra.cat",1,c("mean")),
           list( "X464100.0",1,c("mean")),
-          # list( "X464902.0",1,c("mean")),
-          # list( "X464903.0",1,c("mean")),
-          # list( "X464909.0",1,c("mean")),
-          # list( "X469000.0",1,c("mean")),
           list( "X471990.0",1,c("mean")),
-          # list( "X474100.0",1,c("mean")),
-          # list( "X475901.0",1,c("mean")),
-          # list( "X475909.0",1,c("mean")),
-          # list( "X476309.0",1,c("mean")),
-          # list( "X476400.0",1,c("mean")),
-          # list( "X477101.0",1,c("mean")),
-          # list( "X477102.0",1,c("mean")),
-          # list( "X477203.0",1,c("mean")),
           list( "X477399.0",1,c("mean")),
-          # list( "X479100.0",1,c("mean")),
-          # list( "X479909.0",1,c("mean")),
-          # list( "X702000.0",1,c("mean")),
           list( "X731001.0",1,c("mean"))
-          # list( "X829900.0",1,c("mean")),
-          # list( "Otro",1,c("mean"))
         ),
         treatment.identifier = i,
         controls.identifier = index_train[-i],
@@ -166,11 +97,9 @@ for (i in (index_train)){
         time.plot = 1:10
       )
     resto<-rep(0.2/21,21)
-    synth_400.out<-synth(data_400.out,custom.v=c(0.05,0.05,0.05,0.05,0.05,0.1,0.1,0.1,0.1,0.1,0.05,resto))
-    
+    synth_400.out<-synth(data_400.out,custom.v=c(0.05,0.05,0.05,0.05,0.05,0.1,0.1,0.1,0.1,0.1,resto))
  
     #Errores
-    
     predicted_train<-exp((data_400.out$Y0plot %*% synth_400.out$solution.w)[5:10])-1
     true_train<-exp(data_400.out$Y1plot[5:10])-1
     
@@ -199,7 +128,7 @@ for (i in (index_train)){
     
   }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 }
-
+#SET SELLERS TESTEO
 train<-subset(data2,data2$index %in% train_sellers$seller)
 index_train<-as.numeric(unique(train$index))
 pred_test<-c()
@@ -220,91 +149,31 @@ for (i in (index_test)){
           list( "suma",2,c('mean')),
           list( "suma",3,c('mean')),
           list( "suma",4,c('mean')),
-          #list( "precio_prom",1, c('mean')),
           list( "SKU",1, c("mean")),
           list( "precio_desv",1,c("mean")),
           list( "precio_median",1,c("mean")),
-          #list( "precio_max",1,c("mean")),
           list( "precio_min",1,c("mean")),
-          #list( "precio_25",1,c("mean")),
           list( "precio_75",1,c("mean")),
-          list("cluster",1,c("mean")),
-          #list( "tramo_1.0",1,c("mean")),
-          #list( "tramo_2.0",1,c("mean")),
-          #list( "tramo_3.0",1,c("mean")),
-          #list( "tramo_4.0",1,c("mean")),
-          #list( "tramo_5.0",1,c("mean")),
           list( "tramo_6.0",1,c("mean")),
-          #list( "tramo_7.0",1,c("mean")),
-          #list( "tramo_8.0",1,c("mean")),
           list( "tramo_9.0",1,c("mean")),
-          #list( "tramo_10.0",1,c("mean")),
-          # list( "tramo_11.0",1,c("mean")),
-          # list( "tramo_12.0",1,c("mean")),
-          # list( "tramo_13.0",1,c("mean")),
-          #list( "G01",1,c("mean")),
           list( "G02",1,c("mean")),
-          #list( "G03",1,c("mean")),
-          #list( "G04",1,c("mean")),
-          #list( "G05",1,c("mean")),
           list( "G06",1,c("mean")),
           list( "G07",1,c("mean")),
-          #list( "G08",1,c("mean")),
           list( "G09",1,c("mean")),
-          #list( "G10",1,c("mean")),
-          #list( "G11",1,c("mean")),
-          #list( "G12",1,c("mean")),
-          #list( "G13",1,c("mean")),
-          #list( "G14",1,c("mean")),
           list( "G16",1,c("mean")),
-          #list( "G17",1,c("mean")),
           list( "G18",1,c("mean")),
-          #list( "G19",1,c("mean")),
-          #list( "G20",1,c("mean")),
           list( "G21",1,c("mean")),
           list( "G22",1,c("mean")),
           list( "G0801",1,c("mean")),
           list( "G0802",1,c("mean")),
-          #list( "G1202",1,c("mean")),
-          #list( "G1302",1,c("mean")),
-          #list( "G1403",1,c("mean")),
-          #list( "G1602",1,c("mean")),
           list( "G1604",1,c("mean")),
-          #list( "G1612",1,c("mean")),
           list( "G1711",1,c("mean")),
-          #list( "G1802",1,c("mean")),
-          #list( "G1803",1,c("mean")),
           list( "G1901",1,c("mean")),
-          #list( "G1902",1,c("mean")),
-          # list( "G1903",1,c("mean")),
-          # list( "G1907",1,c("mean")),
-          # list( "G2101",1,c("mean")),
-          # list( "G2102",1,c("mean")),
-          # list( "G2103",1,c("mean")),
           list( "G2104",1,c("mean")),
-          # list( "G2105",1,c("mean")),
           list( "Otra.cat",1,c("mean")),
           list( "X464100.0",1,c("mean")),
-          # list( "X464902.0",1,c("mean")),
-          # list( "X464903.0",1,c("mean")),
-          # list( "X464909.0",1,c("mean")),
-          # list( "X469000.0",1,c("mean")),
-          list( "X471990.0",1,c("mean")),
-          # list( "X474100.0",1,c("mean")),
-          # list( "X475901.0",1,c("mean")),
-          # list( "X475909.0",1,c("mean")),
-          # list( "X476309.0",1,c("mean")),
-          # list( "X476400.0",1,c("mean")),
-          # list( "X477101.0",1,c("mean")),
-          # list( "X477102.0",1,c("mean")),
-          # list( "X477203.0",1,c("mean")),
           list( "X477399.0",1,c("mean")),
-          # list( "X479100.0",1,c("mean")),
-          # list( "X479909.0",1,c("mean")),
-          # list( "X702000.0",1,c("mean")),
           list( "X731001.0",1,c("mean"))
-          # list( "X829900.0",1,c("mean")),
-          # list( "Otro",1,c("mean"))
         ),
         treatment.identifier = i,
         controls.identifier = index_train,
@@ -313,11 +182,8 @@ for (i in (index_test)){
         unit.names.variable = 2,
         time.plot = 1:10
       )
-    
     resto<-rep(0.2/21,21)
-    synth_400.out<-synth(data_400.out,custom.v=c(0.05,0.05,0.05,0.05,0.05,0.1,0.1,0.1,0.1,0.1,0.05,resto))
-    
-    
+    synth_400.out<-synth(data_400.out,custom.v=c(0.05,0.05,0.05,0.05,0.05,0.1,0.1,0.1,0.1,0.1,resto))
     
     #Errores
     
@@ -346,19 +212,9 @@ for (i in (index_test)){
     seller<-c(seller,i)
     sel_test<-rep(i,6)
     sels_test<-c(sels_test,sel_test)
-    
-    
-    
-
   }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 }
-
-synth_400.out$solution.v
-#796= 5.475183e-01, 659=1.121928e-01, 142= 1.030385e-01,199=  9.309337e-02,206=  8.027764e-02, 177= 2.118147e-02
-# 184= 1.854200e-02, 389= 8.666630e-03, 769= 7.856988e-03 , 230= 5.395123e-03
-
-
-
+#Factor Duan 
 factor<-duan_smearing_factor(real_train,pred_train)
 train_pred_adj<-(factor*pred_train)
 df_adj_train<-as.data.frame(train_pred_adj)
@@ -366,7 +222,6 @@ df_adj_train$pred<-pred_train
 df_adj_train$real<-real_train
 df_adj_train$index<-sels_train
 
-#test
 factor<-duan_smearing_factor(real_test,pred_test)
 test_pred_adj<-(factor*pred_test)
 df_adj_test<-as.data.frame(test_pred_adj)
@@ -375,7 +230,6 @@ df_adj_test$real<-real_test
 df_adj_test$index<-sels_test
 
 sels_test<-rep(seller,each=6)
-
 
 predicciones<-data.frame(
   "seller"=rep(0,length(sels)),
@@ -394,19 +248,9 @@ predicciones['resta']<- predicciones$prediccion-predicciones$real
 pred_ent<-predicciones[predicciones$Semana<=4,]
 pred_test<-predicciones[predicciones$Semana>4,]
 
-print(paste('Porcentaje subestimado modelo control sintetico set entrenamiento:',round(dim(pred_ent[pred_ent$resta<0,])[1]/dim(pred_ent)[1],3)*100,'%'))
-print(paste('Porcentaje subestimado modelo control sintetico set testeo:',round(dim(pred_test[pred_test$resta<0,])[1]/dim(pred_test)[1],3)*100,'%'))
-print(paste('Porcentaje sobreestimado modelo control sintetico set entrenamiento:',round(dim(pred_ent[pred_ent$resta>0,])[1]/dim(pred_ent)[1],3)*100,'%'))
-print(paste('Porcentaje sobreestimado modelo control sintetico set testeo:',round(dim(pred_test[pred_test$resta>0,])[1]/dim(pred_test)[1],3)*100,'%'))
-
-print(paste('Promedio error entrenamiento:', mean(pred_ent$resta)))
-print(paste('Promedio error testeo:', mean(pred_test$resta)))
 MAPE_ENT_ADJ<-c()
 WMAPE_ENT_ADJ<-c()
 RMSE_ENT_ADJ<-c()
-
-
-#test
 MAPE_TEST_ADJ<-c()
 WMAPE_TEST_ADJ<-c()
 RMSE_TEST_ADJ<-c()
@@ -438,6 +282,3 @@ df_error_train<-as.data.frame(cbind(MAPE_ENT_ADJ,WMAPE_ENT_ADJ,RMSE_ENT_ADJ))
 summary(df_error_train)
 df_error_test<-as.data.frame(cbind(MAPE_TEST_ADJ,WMAPE_TEST_ADJ,RMSE_TEST_ADJ))
 summary(df_error_test)
-
-
-write.csv(df_error_test,'cs.csv')
