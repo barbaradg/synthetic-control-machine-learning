@@ -53,11 +53,11 @@ test <- data4[-particion, ]
 
 #### TODAS LAS SEMANAS ####
 # SET TRAIN
-Z_new=train[,5:36]
-Z_prev=train[,5:36]
+Z_new=train[,5:35]
+Z_prev=train[,5:35]
 S=643
 S_new=643
-D=32
+D=31
 W=4
 X_prev=train[,1:4]
 X_new=train[,1:4]
@@ -81,11 +81,11 @@ for (j in 5:10){
 }
 
 #SET TESTEO
-Z_new=test[,5:36]
-Z_prev=train[,5:36]
+Z_new=test[,5:35]
+Z_prev=train[,5:35]
 S=643
 S_new=160
-D=32
+D=31
 W=4
 X_prev=train[,1:4]
 X_new=test[,1:4]
