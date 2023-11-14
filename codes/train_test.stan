@@ -1,12 +1,12 @@
 data {
     int<lower=0> S; #sellers train 640
     int<lower=0> S_new; # sellers test 163
-    int<lower=0> D; # features 8 -> LASSO     
+    int<lower=0> D; # features 30-> LASSO     
     int<lower=0> W; # semana train 4
     matrix [S,W] X_prev; #vtas semanas 1,2,3,4 sellers train 640x4
     matrix[S_new,W] X_new; #vtas semanas 1,2,3,4 sellers test 163x4
-    matrix [S,D] Z_prev; #caracteristicas sellers train 640x12
-    matrix  [S_new,D] Z_new; #caracteristicas sellers test 640x12
+    matrix [S,D] Z_prev; #caracteristicas sellers train 640x30
+    matrix  [S_new,D] Z_new; #caracteristicas sellers test 640x30
     vector<lower=0> [S] y_train; #vtas semana 5 sellers train 640
 }
 parameters {
