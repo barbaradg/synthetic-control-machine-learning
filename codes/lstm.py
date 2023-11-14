@@ -73,9 +73,8 @@ df_escaled=pd.concat([df_escaled.iloc[:,0:11],df_escaled.iloc[:,11:92]], axis=1)
 train_sellers=pd.read_csv('train_sellers.csv')
 test_sellers=pd.read_csv('test_sellers.csv')
 
-#31 features
-df_escaled=df_escaled[['suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra cat','464100.0','471990.0','477399.0','702000.0','731001.0','cluster']]
-
+#30 features
+df_escaled=df_escaled[['suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra cat','464100.0','471990.0','477399.0','702000.0','731001.0']]
 
 train=df_escaled[df_escaled.index.isin(train_sellers.seller)]
 test=df_escaled[df_escaled.index.isin(test_sellers.seller)]
@@ -94,8 +93,8 @@ Y=np.array(Y)
 
 early_stop = EarlyStopping(monitor='val_loss', patience=10, mode='min', min_delta=0.0001)
 model = Sequential()
-model.add(InputLayer((3, 32)))
-model.add(LSTM(50, activation='relu', input_shape=(3, 32)))
+model.add(InputLayer((3, 31)))
+model.add(LSTM(50, activation='relu', input_shape=(3, 31)))
 model.add(Dropout(0.3))
 model.add(Dense(1, 'linear'))
 model.add(Dense(1, 'relu'))
@@ -125,7 +124,7 @@ for i in np.unique(X.index):
     train_arr=np.array(X.loc[i])
     test_predictions = []
     first_eval_batch = train_arr[-3:]
-    current_batch = first_eval_batch.reshape((1, 3, 32))
+    current_batch = first_eval_batch.reshape((1, 3, 31))
     hola=np.array(X.loc[i].drop('suma', axis=1))
     for j in range(5,11):
         current_pred = model.predict(current_batch)
@@ -154,7 +153,7 @@ for i in np.unique(X.index):
     train_arr=np.array(X.loc[i])
     test_predictions = []
     first_eval_batch = train_arr[-3:]
-    current_batch = first_eval_batch.reshape((1, 3, 32))
+    current_batch = first_eval_batch.reshape((1, 3, 31))
     hola=np.array(X.loc[i].drop('suma', axis=1))
     for j in range(5,11):
         current_pred = model.predict(current_batch)
