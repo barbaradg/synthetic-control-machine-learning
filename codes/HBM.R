@@ -7,7 +7,7 @@ library("dplyr")
 library('caret')
 
 #PREPRARCION DATA: LIMPIEZA Y ESCALAMIENTO
-data <- read.csv("DF_SYNTH2_km.csv")
+data <- read.csv("DF_SYNTH2.csv")
 rut<-data[data$Semana==10,]$rut_seller
 data<-as.data.frame(data[(data$rut_seller %in% rut),])
 rownames(data) <- 1:nrow(data)
@@ -18,8 +18,8 @@ data2$suma[data2$suma==0]<-0.1
 features<-as.matrix(cbind(data2[4],data2[6:90]))
 features<-as.data.frame(features)
 
-data3<-cbind(data2$suma, data2$Semana, features[c('plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0','cluster')])
-colnames(data3)<-c('suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0','cluster')
+data3<-cbind(data2$suma, data2$Semana, features[c('plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0')])
+colnames(data3)<-c('suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0')
 
 
 y1= data3['suma'][data3$Semana==1,]
