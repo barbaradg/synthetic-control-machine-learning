@@ -54,7 +54,7 @@ def df_to_X_y(df, window_size=3):
 
 """## Preparación data"""
 
-df=pd.read_csv('DF_SYNTH2_km.csv')
+df=pd.read_csv('DF_SYNTH2.csv')
 df=df.iloc[:,1:92]
 df=df[df['Semana']<=10] #hasta la semana 10, 6 a predecir
 df=df.set_index('index')
@@ -76,8 +76,6 @@ test_sellers=pd.read_csv('test_sellers.csv')
 #31 features
 df_escaled=df_escaled[['suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra cat','464100.0','471990.0','477399.0','702000.0','731001.0','cluster']]
 
-#8 features
-#df_escaled=df_escaled[['suma','Semana','plata2','precio_median','SKU','G18','G0802']]
 
 train=df_escaled[df_escaled.index.isin(train_sellers.seller)]
 test=df_escaled[df_escaled.index.isin(test_sellers.seller)]
@@ -93,8 +91,6 @@ for i in range(len(X_)):
     Y.append(y_[i])
 x=np.array(x)
 Y=np.array(Y)
-
-x.shape
 
 early_stop = EarlyStopping(monitor='val_loss', patience=10, mode='min', min_delta=0.0001)
 model = Sequential()
@@ -229,8 +225,5 @@ BOXPLOTS7T['WMAPE_T']=WMAPE_TEST
 BOXPLOTS7T['RMSE_T']=RMSE_TEST
 BOXPLOTS7T['MODELO']='LSTM'
 
-np.round(BOXPLOTS7E.groupby('MODELO').agg(MAPE_E=('MAPE_E','mean'), WMAPE_E=('WMAPE_E','mean'),RMSE_E=('RMSE_E','mean')),2)
-
-np.round(BOXPLOTS7T.groupby('MODELO').agg(MAPE_T=('MAPE_T','mean'), WMAPE_T=('WMAPE_T','mean'),RMSE_T=('RMSE_T','mean')),2)
-
-BOXPLOTS7T.to_csv('lstm.csv')
+print(np.round(BOXPLOTS7E.groupby('MODELO').agg(MAPE_E=('MAPE_E','mean'), WMAPE_E=('WMAPE_E','mean'),RMSE_E=('RMSE_E','mean')),2))
+print(np.round(BOXPLOTS7T.groupby('MODELO').agg(MAPE_T=('MAPE_T','mean'), WMAPE_T=('WMAPE_T','mean'),RMSE_T=('RMSE_T','mean')),2))
