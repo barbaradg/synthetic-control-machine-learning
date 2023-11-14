@@ -23,7 +23,10 @@ tqdm.pandas()
 import lightgbm as lgb
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 
+from scipy.stats import randint, uniform
 def WMAPE2 (true,predicted):
     WMAPE2=np.round((np.sum((np.abs(true-predicted)))/np.sum(true))*100,3)
     return (WMAPE2)
@@ -71,11 +74,7 @@ X_test_esc=pd.concat([np.log(X_test[['y1','y2','y3','y4','precio_median','SKU','
 ## Modelos
 """
 
-import xgboost as xgb
-from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import GridSearchCV
 
-from scipy.stats import randint, uniform
 
 # Definir los hiperparámetros a buscar
 parameters = {
