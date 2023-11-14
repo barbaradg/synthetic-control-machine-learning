@@ -25,7 +25,7 @@ data2$suma[data2$suma==0]<-0.1
 data2[3:4]<-log(data2[3:4]+1)
 data2[6:14]<-log(data2[6:14]+1)
 
-data2<-data2[c('index','rut_seller','suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0','cluster')]
+data2<-data2[c('index','rut_seller','suma','Semana','plata2','precio_desv','precio_median','precio_min','precio_75','SKU','tramo_6.0','tramo_9.0','G02','G06','G07','G09','G13','G16','G18','G21','G22','G0801','G0802','G1604','G1711','G1901','G2104','Otra.cat','X464100.0','X471990.0','X477399.0','X702000.0','X731001.0')]
 
 train_sellers<-read.csv("train_sellers.csv")
 test_sellers<-read.csv("test_sellers.csv")
