@@ -434,3 +434,5 @@ BOXPLOTS5T['MODELO']='CS+RF'
 
 print(np.round(BOXPLOTS5E.groupby('MODELO').agg(MAPE_E=('MAPE_E','mean'), WMAPE_E=('WMAPE_E','mean'), RMSE_E=('RMSE_E','mean')),2))
 print(np.round(BOXPLOTS5T.groupby('MODELO').agg(MAPE_T=('MAPE_T','mean'), WMAPE_T=('WMAPE_T','mean'), RMSE_T=('RMSE_T','mean')),2))
+
+#Mejor modelo control sintetico combinado con xgboost en términos de WMAPE y RMSE
